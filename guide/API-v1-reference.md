@@ -266,7 +266,10 @@ $url = 'http://sandbox.seopult.org/partners/acme/getUserNotices?k=zaa' . '<USER_
 >     "type": "<TYPE>",
 >     "title": "<TITLE>",
 >     "text": "<TEXT>",
->     "params": "<PARAMS>"               
+>     "params": "<PARAMS>",
+>     "templateId": "<TEMPLATE_ID>",
+>     "textTemplate": "<TEXT_TEMPLATE>",
+>     "titleTemplate": "<TITLE_TEMPLATE>"
 >   },
 >   ...
 > ]
@@ -278,6 +281,9 @@ $url = 'http://sandbox.seopult.org/partners/acme/getUserNotices?k=zaa' . '<USER_
 > > `TITLE` — Заголовок (тема) сообщения.    
 > > `TEXT` — Текст сообщения (**Важно!** в тексте могу содержаться [Шаблоны ссылок на внутренние экраны iframe](#Deeplinks-в-тексте-сообщений)).   
 > > `PARAMS` — Массив динамических свойств сообщения (используется для подстановки в шаблон сообщения партнера).     
+> > `TEMPLATE_ID` — Целочисленный уникальный идентификатор шаблона сообщения.
+> > `TEXT_TEMPLATE` — Шаблон текста сообщения в формате [mustache](http://mustache.github.io/mustache.5.html).
+> > `TITLE_TEMPLATE` — Шаблон заголовка (subject) сообщения в формате [mustache](http://mustache.github.io/mustache.5.html).
 
 `FAIL`
 ```json
