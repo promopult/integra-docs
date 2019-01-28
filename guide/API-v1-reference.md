@@ -422,7 +422,7 @@ $url = 'http://sandbox.promopult.org/parnters/acme/getMessageTemplates?k=zaa' . 
 > > где,  
 > > `TEMPLATE_ID` — Целочисленный уникальный идентификатор шаблона сообщения.  
 > > `TEXT_TEMPLATE` — Шаблон текста сообщения в формате [mustache](http://mustache.github.io/mustache.5.html).  
-> > `TITLE_TEMPLATE` — Шаблон заголовка (subject) сообщения в формате [mustache](http://mustache.github.io/mustache.5.html).  
+> > `TITLE_TEMPLATE` — Шаблон заголовка (subject) сообщения в формате [mustache](http://mustache.github.io/mustache.5.html).    
 `FAIL`
 ```json
 {
