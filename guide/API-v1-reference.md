@@ -5,8 +5,8 @@
 * [Авторизация пользователя — `cryptLogin`](#Авторизация)
 * [Пополнение баланса пользователя — `doPayment`](#Пополнение-баланса-пользователя)
 * [Получение данных пользователей партнёра — `getUserData`](#Получение-данных-пользователей-партнёра)
-* [Получение списка непрочитанных сообщений пользователя — `getUserNotices`](#Получение-списка-сообщений-пользователя)
-* [Получение списка непрочитанных сообщений всех пользователей партнёра — `getNotices`](#Получение-сообщений-всех-пользователей-партнёра)
+* [Получение списка непрочитанных сообщений пользователя — `getUserMessages`](#Получение-списка-сообщений-пользователя)
+* [Получение списка непрочитанных сообщений всех пользователей партнёра — `getMessages`](#Получение-сообщений-всех-пользователей-партнёра)
 * [Отметка о прочтении списка сообщений — `readMessages`](#Отметка-о-прочтении-списка-сообщений)
 * [Изменение URL-а проекта — `changeUrl`](#Изменение-urla-проекта)
 * [Авторесайз фрейма](#Авторесайз-фрейма)
@@ -218,10 +218,10 @@ $url = 'https://sandbox.promopult.org/partners/acme/getUsersData?k=zaa' . '<PART
 > `PARTHER_CRYPT_KEY` — Ключ который необходимо запросить. Уникален для партнера системы.
 
 <a name="Получение-списка-сообщений-пользователя"></a>
-## Получение списка непрочитанных сообщений пользователя — `getUserNotices`
+## Получение списка непрочитанных сообщений пользователя — `getUserMessages`
 #### Синтаксис запроса
 ```
-GET https://<HOST>/<PARTNER_PATH>/getUserNotices ?
+GET https://<HOST>/<PARTNER_PATH>/getUserMessages ?
   k=<PREFIX><USER_HASH><ENCRYPTED_DATA>
 ```
 
@@ -235,7 +235,7 @@ $data = array(
 
 $k = json_encode($data);
 $code = SimpleCrypt::encrypt($k, '<CRYPT_KEY>');
-$url = 'http://sandbox.promopult.org/partners/acme/getUserNotices?k=zaa' . '<USER_HASH>' . urlencode($code);
+$url = 'http://sandbox.promopult.org/partners/acme/getUserMessages?k=zaa' . '<USER_HASH>' . urlencode($code);
 ```
 где
 > `MARK_READ` — — Необязятельный параметр, если передан TRUE, сообщения буду как прочитанное.
@@ -296,10 +296,10 @@ $url = 'http://sandbox.promopult.org/partners/acme/getUserNotices?k=zaa' . '<USE
 }
 ```  
 <a name="Получение-сообщений-всех-пользователей-партнёра"></a>
-## Получение списка непрочитанных сообщений всех пользователей партнёра — `getNotices`
+## Получение списка непрочитанных сообщений всех пользователей партнёра — `getMessages`
 #### Синтаксис запроса
 ```
-GET https://<HOST>/<PARTNER_PATH>/getNotices ?
+GET https://<HOST>/<PARTNER_PATH>/getMessages ?
   k=<PREFIX><PARTNER_HASH><ENCRYPTED_DATA>
 ```
 Создадим урл GET-запроса для получения сообщений
@@ -312,7 +312,7 @@ $data = array(
 
 $k = json_encode($data);
 $code = SimpleCrypt::encrypt($k, '<CRYPT_KEY>');
-$url = 'http://sandbox.promopult.org/parnters/acme/getNotices?k=zaa' . '<PARTNER_HASH>' . urlencode($code);
+$url = 'http://sandbox.promopult.org/parnters/acme/getMessages?k=zaa' . '<PARTNER_HASH>' . urlencode($code);
 ```
 где
 > `MARK_READ` — Необязятельный параметр, если передан TRUE, сообщения буду как прочитанное.
