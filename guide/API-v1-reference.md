@@ -372,7 +372,7 @@ $url = 'http://sandbox.promopult.org/parnters/acme/getMessages?k=zaa' . '<PARTNE
   "error" : true
 }
 ```  
-<a name="Получение-шаблнов-сообщений"></a>
+<a name="Получение-шаблонов-сообщений"></a>
 ## Получение шаблонов сообщений — `getMessageTemplates`
 #### Синтаксис запроса
 ```
