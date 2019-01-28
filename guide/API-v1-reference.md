@@ -18,12 +18,12 @@ https://<HOST>/<PARTNER_PATH>/<METHOD>
 ```
 где
 > `HOST` — хост сервиса. Хост песочницы: `sandbox.seopult.org`;  
-> `PARTNER_PATH` — уникальный путь к апи для каждого партнера. `NIC.RU` = `/partners/nicru/`;  
+> `PARTNER_PATH` — уникальный путь к апи для каждого партнера.  
 > `METHOD` — название апи-метода.
   
 *Пример:*  
 
-`https://sandbox.seopult.org/partners/nicru`
+`https://sandbox.seopult.org/partners/acme`
 
 <a name="Регистрация-пользователя"></a>
 ### Регистрация пользователя — `getCryptKeyWithUserReg`
@@ -91,7 +91,7 @@ GET https://<HOST>/<PARTNER_PATH>/getCryptKeyWithUserReg
 
 *Пример:*  
 
-`https://sandbox.seopult.org/partners/nicru/getCryptKeyWithUserReg?login=user&email=user@yandex.ru&phone=79551234567&hash=ed9d0bba9c9a56033b3b943742ef51aa&partner=c44e340a29f2e3b4e63412bf929d7fc8&suggestedDomain=example.com`
+`https://sandbox.seopult.org/partners/acme/getCryptKeyWithUserReg?login=user&email=user@yandex.ru&phone=79551234567&hash=ed9d0bba9c9a56033b3b943742ef51aa&partner=c44e340a29f2e3b4e63412bf929d7fc8&suggestedDomain=example.com`
 
 <a name="Авторизация"></a>
 ### Авторизация пользователя — `cryptLogin`
@@ -119,14 +119,14 @@ $data = [
 // генерируем URL
 $k    = json_encode($data);
 $code = SimpleCrypt::encrypt($k, '<CRYPT_KEY>');
-$url  = 'https://sandbox.seopult.org/partners/nicru/cryptLogin?k=zaa' . '<USER_HASH>' . urlencode($code) . '&r=<PAGE>';
+$url  = 'https://sandbox.seopult.org/partners/acme/cryptLogin?k=zaa' . '<USER_HASH>' . urlencode($code) . '&r=<PAGE>';
 ```
 
 В результате переменная `$url` будет содержать ссылку, которую можно подставлять в параметр `src` тега iframe.
 
 *Пример:*  
 
-`https://sandbox.seopult.org/partners/nicru/cryptLogin?k=zaaf3102ac1d0588bea1db5411f662826636ZTQo%2BDP4JOoltfdzJ7T0tTXoanh0Wba5s%2BkZKaYa2uqk6OS1dfV05RvV9uimaZn2dOm0qKZbgHaqaef2Metn2OX15elpWymnm6bk5yVluPNlqve1cbej7CEnaJmaaKfoaNlqpCmn6yWZ7OYppPr`
+`https://sandbox.seopult.org/partners/acme/cryptLogin?k=zaaf3102ac1d0588bea1db5411f662826636ZTQo%2BDP4JOoltfdzJ7T0tTXoanh0Wba5s%2BkZKaYa2uqk6OS1dfV05RvV9uimaZn2dOm0qKZbgHaqaef2Metn2OX15elpWymnm6bk5yVluPNlqve1cbej7CEnaJmaaKfoaNlqpCmn6yWZ7OYppPr`
 
 <a name="Пополнение-баланса-пользователя"></a>
 ### Пополнение баланса пользователя — `doPayment`
@@ -211,7 +211,7 @@ $queryData = array(
 
 $k = json_encode($queryData);
 $code = SimpleCrypt::encrypt($k, '<PARTHER_CRYPT_KEY>');
-$url = 'https://sandbox.seopult.org/partners/nicru/getUsersData?k=zaa' . '<PARTNER_HASH>' . urlencode($code) . '&type=userInvite'
+$url = 'https://sandbox.seopult.org/partners/acme/getUsersData?k=zaa' . '<PARTNER_HASH>' . urlencode($code) . '&type=userInvite'
 ```
 
 где
@@ -235,7 +235,7 @@ $data = array(
 
 $k = json_encode($data);
 $code = SimpleCrypt::encrypt($k, '<CRYPT_KEY>');
-$url = 'http://sandbox.seopult.org/partners/nicru/getUserNotices?k=zaa' . '<USER_HASH>' . urlencode($code);
+$url = 'http://sandbox.seopult.org/partners/acme/getUserNotices?k=zaa' . '<USER_HASH>' . urlencode($code);
 ```
 где
 > `MARK_READ` — Флаг, устанавливающий полученным сообщениям значение состояния "прочитано". По умолчанию, состояние "прочитано" устанавливается получаемым сообщениям автоматически после получения.
@@ -306,10 +306,10 @@ $data = array(
 
 $k = json_encode($data);
 $code = SimpleCrypt::encrypt($k, '<CRYPT_KEY>');
-$url = 'http://sandbox.seopult.org/partners/nicru/messages?k=zaa' . '<PARTNER_HASH>' . urlencode($code);
+$url = 'http://sandbox.seopult.org/parnters/acme/messages?k=zaa' . '<PARTNER_HASH>' . urlencode($code);
 ```
 где
-> `MARK_READ` — Флаг, устанавливающий полученным сообщениям значение состояния "прочитано". По умолчанию состояние "прочитано" устанавливается получаемым сообщениям автоматически после получения.
+> `MARK_READ` — Необязятельный параметр, если передан TRUE, сообщения буду как прочитанное.
  
 #### Формат ответа
 `SUCCESS`
@@ -337,7 +337,10 @@ $url = 'http://sandbox.seopult.org/partners/nicru/messages?k=zaa' . '<PARTNER_HA
 >     "type": "<TYPE>",
 >     "title": "<TITLE>",
 >     "text": "<TEXT>",
->     "params": "<PARAMS>"               
+>     "params": "<PARAMS>",
+>     "templateId": "<TEMPLATE_ID>",
+>     "textTemplate": "<TEXT_TEMPLATE>",
+>     "titleTemplate": "<TITLE_TEMPLATE>"
 >   },
 >   ...
 > ]
@@ -349,7 +352,9 @@ $url = 'http://sandbox.seopult.org/partners/nicru/messages?k=zaa' . '<PARTNER_HA
 > > `TITLE` — Заголовок (тема) сообщения.    
 > > `TEXT` — Текст сообщения (**Важно!** в тексте могу содержаться [Шаблоны ссылок на внутренние экраны iframe](#Deeplinks-в-тексте-сообщений)).   
 > > `PARAMS` — Массив динамических свойств сообщения (используется для подстановки в шаблон сообщения партнера).    
-
+> > `TEMPLATE_ID` — Целочисленный уникальный идентификатор шаблона сообщения.
+> > `TEXT_TEMPLATE` — Шаблон текста сообщения в формате [mustache](http://mustache.github.io/mustache.5.html).
+> > `TITLE_TEMPLATE` — Шаблон заголовка (subject) сообщения в формате [mustache](http://mustache.github.io/mustache.5.html).
 `FAIL`
 ```json
 {
@@ -407,7 +412,7 @@ $data = array(
 
 $k = json_encode($data);
 $code = SimpleCrypt::encrypt($k, '<CRYPT_KEY>');
-$url = 'http://sandbox.seopult.org/partners/nicru/changeUrl?k=zaa' . '<USER_HASH>' . urlencode($code);
+$url = 'http://sandbox.seopult.org/partners/acme/changeUrl?k=zaa' . '<USER_HASH>' . urlencode($code);
 ```
 где
 > `NEW_URL` — Новый URL проекта, например `http://my-new-domain.com`.
@@ -466,24 +471,17 @@ $url = 'http://sandbox.seopult.org/partners/nicru/changeUrl?k=zaa' . '<USER_HASH
 
 <a name="Deeplinks"></a>
 ## Deeplinks
-Для организации _deeplinks_ в методе `cryptLogin` служит GET-параметр `r`, который указывает на какой экран перейти после логина в iframe-е. Например, если необходимо открыть вкладку с настройками для `r` нужно передать значение `project/settings` в URL-кодированном виде.
+Для организации _deeplinks_ в методе `cryptLogin` служит GET-параметр `r`, который указывает на какой экран перейти после логина в iframe-е. Например, если необходимо открыть страницу пополнения для `r` нужно передать значение `go/payment` в URL-кодированном виде.
 
 _Пример:_  
 
-`https://sandbox.seopult.org/partners/nicru/cryptLogin?k=...&r=project%2Fsettings`
+`https://sandbox.seopult.org/partners/acme/cryptLogin?k=...&r=go%2Fpayment`
 
 Для параметра `r` доступны следующие значения:
 ```
-wizard/{1,2,3}
-wizard/help
-project/statistics
-project/keywords
-project/settings
-project/finance
-project/payment
-project/messaging/tickets
-project/messaging/ticket/{id}
-project/messaging/system
+/go/payment
+/go/support
+/go/help
 
 ```
 
@@ -494,19 +492,19 @@ project/messaging/system
 Часть сообщения, содержащая ссылку, выглядит так:
 ```
 ...
-Чтобы пополнить баланс перейдите по <a target="_blank" href="{{/project/payment}}">ссылке</a>. 
+Чтобы пополнить баланс перейдите по <a target="_blank" href="{{go/payment}}">ссылке</a>. 
 ```
-Атрибут `href` содержит шаблон адреса экрана пополнения счета в iframe `{{/project/payment}}`, который, в зависимости от контекста вывода сообщения, необходимо заменить на *deeplink* через интерфейс Партнера в модуль продвижения. 
+Атрибут `href` содержит шаблон адреса экрана пополнения счета в iframe `{{go/payment}}`, который, в зависимости от контекста вывода сообщения, необходимо заменить на *deeplink* через интерфейс Партнера в модуль продвижения. 
 
 После преобразования, для пользователя ссылка в сообщении может выглядеть так: 
 ```
 ...
-Чтобы пополнить баланс перейдите по <a target="_blank" href="http://my-cool-service.com/promotion?open=/project/payment">ссылке</a>.
+Чтобы пополнить баланс перейдите по <a target="_blank" href="http://my-cool-service.com/promotion?open=go/payment">ссылке</a>.
 ```
 
-где `http://my-cool-service.com/promotion?open=/project/payment` адрес страницы модуля на сайте партнера, а GET-параметр `open` пробросится в атрибут `src` тега iframe:
+где `http://my-cool-service.com/promotion?open=go/payment` адрес страницы модуля на сайте партнера, а GET-параметр `open` пробросится в атрибут `src` тега iframe:
 ```
 ...
-<iframe src='https://sandbox.seopult.org/iframe/cryptLogin?k=...&r=/project/payment'></iframe>
+<iframe src='https://sandbox.seopult.org/iframe/cryptLogin?k=...&r=go/payment'></iframe>
 ...
 ``` 
