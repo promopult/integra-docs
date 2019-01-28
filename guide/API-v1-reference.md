@@ -7,6 +7,7 @@
 * [Получение данных пользователей партнёра — `getUserData`](#Получение-данных-пользователей-партнёра)
 * [Получение списка непрочитанных сообщений пользователя — `getUserMessages`](#Получение-списка-сообщений-пользователя)
 * [Получение списка непрочитанных сообщений всех пользователей партнёра — `getMessages`](#Получение-сообщений-всех-пользователей-партнёра)
+* [Получение шаблонов сообщений — `getMessageTemplates`](#Получение-шаблонов-сообщений)
 * [Отметка о прочтении списка сообщений — `readMessages`](#Отметка-о-прочтении-списка-сообщений)
 * [Изменение URL-а проекта — `changeUrl`](#Изменение-urla-проекта)
 * [Авторесайз фрейма](#Авторесайз-фрейма)
@@ -371,6 +372,68 @@ $url = 'http://sandbox.promopult.org/parnters/acme/getMessages?k=zaa' . '<PARTNE
   "error" : true
 }
 ```  
+<a name="Получение-шаблнов-сообщений"></a>
+## Получение шаблонов сообщений — `getMessageTemplates`
+#### Синтаксис запроса
+```
+GET https://<HOST>/<PARTNER_PATH>/getMessageTemplates ?
+  k=<PREFIX><PARTNER_HASH><ENCRYPTED_DATA>
+```
+Создадим урл GET-запроса для получения сообщений
+
+```php
+$data = array(
+    'partner'  => <PARTNER_HASH>
+);
+
+$k = json_encode($data);
+$code = SimpleCrypt::encrypt($k, '<CRYPT_KEY>');
+$url = 'http://sandbox.promopult.org/parnters/acme/getMessageTemplates?k=zaa' . '<PARTNER_HASH>' . urlencode($code);
+```
+ 
+#### Формат ответа
+`SUCCESS`
+```json
+{
+  "status": {
+    "code": 0,
+    "message": "ok"
+  },
+  "error": false,
+  "data": {
+    "messages": <MESSAGE_TEMPLATES>
+  }
+}
+
+```
+где
+> `MESSAGE_TEMPLATES` — Массив шаблонов сообщений в формате:
+> ```json
+> [
+>   ...
+>   {
+>     "templateId": "<TEMPLATE_ID>",
+>     "textTemplate": "<TEXT_TEMPLATE>",
+>     "titleTemplate": "<TITLE_TEMPLATE>"
+>   },
+>   ...
+> ]
+> ```
+> > где,  
+> > `TEMPLATE_ID` — Целочисленный уникальный идентификатор шаблона сообщения.  
+> > `TEXT_TEMPLATE` — Шаблон текста сообщения в формате [mustache](http://mustache.github.io/mustache.5.html).  
+> > `TITLE_TEMPLATE` — Шаблон заголовка (subject) сообщения в формате [mustache](http://mustache.github.io/mustache.5.html).  
+`FAIL`
+```json
+{
+  "status" : {
+    "code" : <ERROR_CODE>,
+    "message" : "<ERROR_MESSAGE>"
+  },
+  "error" : true
+}
+```
+
 <a name="Отметка-о-прочтении-списка-сообщений"></a>
 ## Отметка о прочтении списка сообщений — `readMessages`
 #### Синтаксис запроса
