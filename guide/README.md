@@ -59,7 +59,7 @@ $cryptKey = getenv('__PARTNER_KEY__');
 
 $data = Crypt::encrypt($dataJson, $cryptKey);
 
-$url = 'https://sandbox.seopult.org/iframe/hello?k=zaa' . $hash . urlencode($data);
+$url = 'https://sandbox.promopult.org/iframe/hello?k=zaa' . $hash . urlencode($data);
 
 
 /* Вызываем API */

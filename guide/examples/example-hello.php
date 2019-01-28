@@ -12,7 +12,7 @@ $dataJson = json_encode([
 $hash = getenv('__PARTNER_HASH__');
 $cryptKey = getenv('__PARTNER_KEY__');
 
-// Для разработки удобно использовать песочницу https://sandbox.seopult.org
+// Для разработки удобно использовать песочницу https://sandbox.promopult.org
 $apiHost = getenv('__API_HOST__');
 
 $data = SimpleCrypt::encrypt($dataJson, $cryptKey);

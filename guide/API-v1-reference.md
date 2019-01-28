@@ -6,7 +6,7 @@
 * [Пополнение баланса пользователя — `doPayment`](#Пополнение-баланса-пользователя)
 * [Получение данных пользователей партнёра — `getUserData`](#Получение-данных-пользователей-партнёра)
 * [Получение списка непрочитанных сообщений пользователя — `getUserNotices`](#Получение-списка-сообщений-пользователя)
-* [Получение списка непрочитанных сообщений всех пользователей партнёра — `messages`](#Получение-сообщений-всех-пользователей-партнёра)
+* [Получение списка непрочитанных сообщений всех пользователей партнёра — `getNotices`](#Получение-сообщений-всех-пользователей-партнёра)
 * [Отметка о прочтении списка сообщений — `readMessages`](#Отметка-о-прочтении-списка-сообщений)
 * [Изменение URL-а проекта — `changeUrl`](#Изменение-urla-проекта)
 * [Авторесайз фрейма](#Авторесайз-фрейма)
@@ -17,13 +17,13 @@
 https://<HOST>/<PARTNER_PATH>/<METHOD>
 ```
 где
-> `HOST` — хост сервиса. Хост песочницы: `sandbox.seopult.org`;  
+> `HOST` — хост сервиса. Хост песочницы: `sandbox.promopult.org`;  
 > `PARTNER_PATH` — уникальный путь к апи для каждого партнера.  
 > `METHOD` — название апи-метода.
   
 *Пример:*  
 
-`https://sandbox.seopult.org/partners/acme`
+`https://sandbox.promopult.org/partners/acme`
 
 <a name="Регистрация-пользователя"></a>
 ### Регистрация пользователя — `getCryptKeyWithUserReg`
@@ -91,7 +91,7 @@ GET https://<HOST>/<PARTNER_PATH>/getCryptKeyWithUserReg
 
 *Пример:*  
 
-`https://sandbox.seopult.org/partners/acme/getCryptKeyWithUserReg?login=user&email=user@yandex.ru&phone=79551234567&hash=ed9d0bba9c9a56033b3b943742ef51aa&partner=c44e340a29f2e3b4e63412bf929d7fc8&suggestedDomain=example.com`
+`https://sandbox.promopult.org/partners/acme/getCryptKeyWithUserReg?login=user&email=user@yandex.ru&phone=79551234567&hash=ed9d0bba9c9a56033b3b943742ef51aa&partner=c44e340a29f2e3b4e63412bf929d7fc8&suggestedDomain=example.com`
 
 <a name="Авторизация"></a>
 ### Авторизация пользователя — `cryptLogin`
@@ -119,14 +119,14 @@ $data = [
 // генерируем URL
 $k    = json_encode($data);
 $code = SimpleCrypt::encrypt($k, '<CRYPT_KEY>');
-$url  = 'https://sandbox.seopult.org/partners/acme/cryptLogin?k=zaa' . '<USER_HASH>' . urlencode($code) . '&r=<PAGE>';
+$url  = 'https://sandbox.promopult.org/partners/acme/cryptLogin?k=zaa' . '<USER_HASH>' . urlencode($code) . '&r=<PAGE>';
 ```
 
 В результате переменная `$url` будет содержать ссылку, которую можно подставлять в параметр `src` тега iframe.
 
 *Пример:*  
 
-`https://sandbox.seopult.org/partners/acme/cryptLogin?k=zaaf3102ac1d0588bea1db5411f662826636ZTQo%2BDP4JOoltfdzJ7T0tTXoanh0Wba5s%2BkZKaYa2uqk6OS1dfV05RvV9uimaZn2dOm0qKZbgHaqaef2Metn2OX15elpWymnm6bk5yVluPNlqve1cbej7CEnaJmaaKfoaNlqpCmn6yWZ7OYppPr`
+`https://sandbox.promopult.org/partners/acme/cryptLogin?k=zaaf3102ac1d0588bea1db5411f662826636ZTQo%2BDP4JOoltfdzJ7T0tTXoanh0Wba5s%2BkZKaYa2uqk6OS1dfV05RvV9uimaZn2dOm0qKZbgHaqaef2Metn2OX15elpWymnm6bk5yVluPNlqve1cbej7CEnaJmaaKfoaNlqpCmn6yWZ7OYppPr`
 
 <a name="Пополнение-баланса-пользователя"></a>
 ### Пополнение баланса пользователя — `doPayment`
@@ -211,7 +211,7 @@ $queryData = array(
 
 $k = json_encode($queryData);
 $code = SimpleCrypt::encrypt($k, '<PARTHER_CRYPT_KEY>');
-$url = 'https://sandbox.seopult.org/partners/acme/getUsersData?k=zaa' . '<PARTNER_HASH>' . urlencode($code) . '&type=userInvite'
+$url = 'https://sandbox.promopult.org/partners/acme/getUsersData?k=zaa' . '<PARTNER_HASH>' . urlencode($code) . '&type=userInvite'
 ```
 
 где
@@ -235,10 +235,10 @@ $data = array(
 
 $k = json_encode($data);
 $code = SimpleCrypt::encrypt($k, '<CRYPT_KEY>');
-$url = 'http://sandbox.seopult.org/partners/acme/getUserNotices?k=zaa' . '<USER_HASH>' . urlencode($code);
+$url = 'http://sandbox.promopult.org/partners/acme/getUserNotices?k=zaa' . '<USER_HASH>' . urlencode($code);
 ```
 где
-> `MARK_READ` — Флаг, устанавливающий полученным сообщениям значение состояния "прочитано". По умолчанию, состояние "прочитано" устанавливается получаемым сообщениям автоматически после получения.
+> `MARK_READ` — — Необязятельный параметр, если передан TRUE, сообщения буду как прочитанное.
  
 #### Формат ответа
 `SUCCESS`
@@ -296,10 +296,10 @@ $url = 'http://sandbox.seopult.org/partners/acme/getUserNotices?k=zaa' . '<USER_
 }
 ```  
 <a name="Получение-сообщений-всех-пользователей-партнёра"></a>
-## Получение списка непрочитанных сообщений всех пользователей партнёра — `messages`
+## Получение списка непрочитанных сообщений всех пользователей партнёра — `getNotices`
 #### Синтаксис запроса
 ```
-GET https://<HOST>/<PARTNER_PATH>/messages ?
+GET https://<HOST>/<PARTNER_PATH>/getNotices ?
   k=<PREFIX><PARTNER_HASH><ENCRYPTED_DATA>
 ```
 Создадим урл GET-запроса для получения сообщений
@@ -312,7 +312,7 @@ $data = array(
 
 $k = json_encode($data);
 $code = SimpleCrypt::encrypt($k, '<CRYPT_KEY>');
-$url = 'http://sandbox.seopult.org/parnters/acme/messages?k=zaa' . '<PARTNER_HASH>' . urlencode($code);
+$url = 'http://sandbox.promopult.org/parnters/acme/getNotices?k=zaa' . '<PARTNER_HASH>' . urlencode($code);
 ```
 где
 > `MARK_READ` — Необязятельный параметр, если передан TRUE, сообщения буду как прочитанное.
@@ -418,7 +418,7 @@ $data = array(
 
 $k = json_encode($data);
 $code = SimpleCrypt::encrypt($k, '<CRYPT_KEY>');
-$url = 'http://sandbox.seopult.org/partners/acme/changeUrl?k=zaa' . '<USER_HASH>' . urlencode($code);
+$url = 'http://sandbox.promopult.org/partners/acme/changeUrl?k=zaa' . '<USER_HASH>' . urlencode($code);
 ```
 где
 > `NEW_URL` — Новый URL проекта, например `http://my-new-domain.com`.
@@ -460,13 +460,13 @@ $url = 'http://sandbox.seopult.org/partners/acme/changeUrl?k=zaa' . '<USER_HASH>
 Для установки автоматической высоты встройки внутри страницы партнёра по высоте её внутреннего содержимого, необходимо на странице подключения iframe добавить загрузку скрипта ресайзера.
 ```html
 <script type="text/javascript"
-        src="https://sandbox.iframe.seopult.org/integration/resizer.js"></script>
+        src="https://sandbox.iframe.promopult.org/integration/resizer.js"></script>
 ```
 
 Далее на событие `onload` `html`-элемента iframe добавить вызов: `iFrameResize({ checkOrigin: false }, this)`
 
 ```html
-<iframe src="https://sandbox.seopult.org"
+<iframe src="https://sandbox.promopult.org
         scrolling="no"
         style="min-height: 600px"
         onload="iFrameResize({ checkOrigin: false }, this)"></iframe>
@@ -481,7 +481,7 @@ $url = 'http://sandbox.seopult.org/partners/acme/changeUrl?k=zaa' . '<USER_HASH>
 
 _Пример:_  
 
-`https://sandbox.seopult.org/partners/acme/cryptLogin?k=...&r=go%2Fpayment`
+`https://sandbox.promopult.org/partners/acme/cryptLogin?k=...&r=go%2Fpayment`
 
 Для параметра `r` доступны следующие значения:
 ```
@@ -511,6 +511,6 @@ _Пример:_
 где `http://my-cool-service.com/promotion?open=go/payment` адрес страницы модуля на сайте партнера, а GET-параметр `open` пробросится в атрибут `src` тега iframe:
 ```
 ...
-<iframe src='https://sandbox.seopult.org/iframe/cryptLogin?k=...&r=go/payment'></iframe>
+<iframe src='https://sandbox.promopult.org/iframe/cryptLogin?k=...&r=go/payment'></iframe>
 ...
 ``` 
