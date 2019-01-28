@@ -281,9 +281,9 @@ $url = 'http://sandbox.promopult.org/partners/acme/getUserMessages?k=zaa' . '<US
 > > `TITLE` — Заголовок (тема) сообщения.    
 > > `TEXT` — Текст сообщения (**Важно!** в тексте могу содержаться [Шаблоны ссылок на внутренние экраны iframe](#Deeplinks-в-тексте-сообщений)).   
 > > `PARAMS` — Массив динамических свойств сообщения (используется для подстановки в шаблон сообщения партнера).     
-> > `TEMPLATE_ID` — Целочисленный уникальный идентификатор шаблона сообщения.
-> > `TEXT_TEMPLATE` — Шаблон текста сообщения в формате [mustache](http://mustache.github.io/mustache.5.html).
-> > `TITLE_TEMPLATE` — Шаблон заголовка (subject) сообщения в формате [mustache](http://mustache.github.io/mustache.5.html).
+> > `TEMPLATE_ID` — Целочисленный уникальный идентификатор шаблона сообщения.  
+> > `TEXT_TEMPLATE` — Шаблон текста сообщения в формате [mustache](http://mustache.github.io/mustache.5.html).  
+> > `TITLE_TEMPLATE` — Шаблон заголовка (subject) сообщения в формате [mustache](http://mustache.github.io/mustache.5.html).  
 
 `FAIL`
 ```json
@@ -358,9 +358,9 @@ $url = 'http://sandbox.promopult.org/parnters/acme/getMessages?k=zaa' . '<PARTNE
 > > `TITLE` — Заголовок (тема) сообщения.    
 > > `TEXT` — Текст сообщения (**Важно!** в тексте могу содержаться [Шаблоны ссылок на внутренние экраны iframe](#Deeplinks-в-тексте-сообщений)).   
 > > `PARAMS` — Массив динамических свойств сообщения (используется для подстановки в шаблон сообщения партнера).    
-> > `TEMPLATE_ID` — Целочисленный уникальный идентификатор шаблона сообщения.
-> > `TEXT_TEMPLATE` — Шаблон текста сообщения в формате [mustache](http://mustache.github.io/mustache.5.html).
-> > `TITLE_TEMPLATE` — Шаблон заголовка (subject) сообщения в формате [mustache](http://mustache.github.io/mustache.5.html).
+> > `TEMPLATE_ID` — Целочисленный уникальный идентификатор шаблона сообщения.  
+> > `TEXT_TEMPLATE` — Шаблон текста сообщения в формате [mustache](http://mustache.github.io/mustache.5.html).  
+> > `TITLE_TEMPLATE` — Шаблон заголовка (subject) сообщения в формате [mustache](http://mustache.github.io/mustache.5.html).  
 `FAIL`
 ```json
 {
