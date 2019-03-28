@@ -1,7 +1,7 @@
 # Список API-методов модуля
 
 ### Содержание
-* [Регистрация пользователя — `getCryptKeyWithUserReg`](#Регистрация-пользователя)
+* [Регистрация пользователя — `createUser`](#Регистрация-пользователя)
 * [Авторизация пользователя — `cryptLogin`](#Авторизация)
 * [Пополнение баланса пользователя — `doPayment`](#Пополнение-баланса-пользователя)
 * [Получение данных пользователей партнёра — `getUserData`](#Получение-данных-пользователей-партнёра)
@@ -15,42 +15,49 @@
 
 ### Формирование пути `url` запросов к API
 ```
-https://<HOST>/<PARTNER_PATH>/<METHOD>
+https://<HOST>/<PARTNER_PATH>/<METHOD>?k=<PREFIX><HASH><ENCRYPTED_DATA>
 ```
 где
 > `HOST` — хост сервиса. Хост песочницы: `sandbox.promopult.org`;  
 > `PARTNER_PATH` — уникальный путь к апи для каждого партнера.  
-> `METHOD` — название апи-метода.
-  
-*Пример:*  
-
-`https://sandbox.promopult.org/partners/acme`
+> `METHOD` — название апи-метода.  
+> `PREFIX` — код алгоритма шифрования (всегда`'zaa'`);  
+> `PARTNER_HASH` — хеш Партнера или Пользователя в зависимости от вызываемого метода;  
+> `ENCRYPTED_DATA` — закодированные данные запроса.  
 
 <a name="Регистрация-пользователя"></a>
-### Регистрация пользователя — `getCryptKeyWithUserReg`
+### Регистрация пользователя — `createUser`
 #### Синтаксис запроса
 ```
-GET https://<HOST>/<PARTNER_PATH>/getCryptKeyWithUserReg
- ?login=<string>
- &email=<string>
- &phone=<string>
- &hash=<string>
- &partner=<string>
- &suggestedDomain=<string>
+GET https://<HOST>/<PARTNER_PATH>/createUser ?
+  k=<PREFIX><PARTNER_HASH><ENCRYPTED_DATA>
+```
+
+Для регистрации создадим следующий GET-запрос:
+
+```php
+$data = [
+  'username'        => '<string>',  // Обязательное поле
+  'hash'            => '<string>',  // Обязятельное поле
+  'email'           => '<string>',
+  'phone'           => '<string>',
+  'suggestedDomain' => '<string>',
+  'inviterUserId'   => '<string>'
+];
+
+// генерируем URL
+$k    = json_encode($data);
+$code = SimpleCrypt::encrypt($k, '<CRYPT_KEY>');
+$url  = 'https://sandbox.promopult.org/partners/acme/createUser?k=zaa' . '<PARTNER_HASH>' . urlencode($code)';
 ```
 
 Параметры:  
-> `login` — уникальный логин в системе. Для поддержания уникальности желательно в него добавлять префикс, содержащий ид пользователя партнера. Например: `<PARTNER>_<DOMAIN>`
-
-> `email` — email пользователя в системе.
-
-> `phone` — мобильный телефон пользователя в интернациональном формате. Например: `+79551234567` (необязятельный параметр).  
-
-> `hash` — уникальный 32-символьный случайный хеш пользователя. При этом его необходимо сохранить в БД для дальнейшего использования.
-
-> `partner` — ваш уникальный 32-символьный идентификатор партнера.
-
-> `suggestedDomain` — домен, который должен продвигаться в системе. Без протокола. Например: `site.ru`, `lenta.ru`, `cnn.com` (Необязательный параметр)
+> `username` — уникальный логин в системе. Для поддержания уникальности желательно в него добавлять короткий префикс и идентификатор пользователя партнера. Например: `acme-site.ru-11235813`;  
+> `hash` — уникальный 32-символьный случайный хеш пользователя. При этом его необходимо сохранить в БД для дальнейшего использования;  
+> `email` — email пользователя в системе;  
+> `phone` — мобильный телефон пользователя в интернациональном формате. Например: `+79551234567`;      
+> `suggestedDomain` — домен, который должен продвигаться в системе (без схемы), например: `site.ru`, `lenta.ru`, `cnn.com`;  
+> `inviterUserId` — идентификатор пользователя в системе Партнера (используется для удобства отладки и решения проблем).  
 
 #### Формат ответа ####
 `SUCCESS`
@@ -89,10 +96,6 @@ GET https://<HOST>/<PARTNER_PATH>/getCryptKeyWithUserReg
 > `2` — Неверный ключ партнера  
 > `3` — Данный ключ пользователя уже занят - сгенерируйте новый  
 > `4` — Длина хеша должна быть 32 символа  
-
-*Пример:*  
-
-`https://sandbox.promopult.org/partners/acme/getCryptKeyWithUserReg?login=user&email=user@yandex.ru&phone=79551234567&hash=ed9d0bba9c9a56033b3b943742ef51aa&partner=c44e340a29f2e3b4e63412bf929d7fc8&suggestedDomain=example.com`
 
 <a name="Авторизация"></a>
 ### Авторизация пользователя — `cryptLogin`
