@@ -3,6 +3,8 @@
 ### Содержание
 * [Регистрация пользователя — `createUser`](#Регистрация-пользователя)
 * [Авторизация пользователя — `cryptLogin`](#Авторизация)
+* [Архивация пользователя — `archiveUser`](#Архивация-пользователя)
+* [Разархивация пользователя — `unarchiveUser`](#Разархивация-пользователя)
 * [Пополнение баланса пользователя — `doPayment`](#Пополнение-баланса-пользователя)
 * [Получение данных пользователей партнёра — `getUserData`](#Получение-данных-пользователей-партнёра)
 * [Получение списка непрочитанных сообщений пользователя — `getUserMessages`](#Получение-списка-сообщений-пользователя)
@@ -131,6 +133,122 @@ $url  = 'https://sandbox.promopult.org/partners/acme/cryptLogin?k=zaa' . '<USER_
 *Пример:*  
 
 `https://sandbox.promopult.org/partners/acme/cryptLogin?k=zaaf3102ac1d0588bea1db5411f662826636ZTQo%2BDP4JOoltfdzJ7T0tTXoanh0Wba5s%2BkZKaYa2uqk6OS1dfV05RvV9uimaZn2dOm0qKZbgHaqaef2Metn2OX15elpWymnm6bk5yVluPNlqve1cbej7CEnaJmaaKfoaNlqpCmn6yWZ7OYppPr`
+
+<a name="Архивация-пользователя"></a>
+### Архивация пользователя — `archiveUser`
+#### Синтаксис запроса
+```
+GET https://<HOST>/<PARTNER_PATH>/archiveUser ?
+  k=<PREFIX><USER_HASH><ENCRYPTED_DATA>
+```
+
+Для архивации создадим следующий GET-запрос:
+
+```php
+$data = [
+];
+
+// генерируем URL
+$k    = json_encode($data);
+$code = SimpleCrypt::encrypt($k, '<CRYPT_KEY>');
+$url  = 'https://sandbox.promopult.org/partners/acme/archiveUser?k=zaa' . '<USER_HASH>' . urlencode($code)';
+```  
+
+#### Формат ответа ####
+`SUCCESS`
+
+```json
+{
+  "status": {
+    "code": 0,
+    "message": "ok"
+  },
+  "error": false,
+  "data": {
+    "userHash": "<USER_HASH>",
+    "lastBillingDate": "<DATE>"
+  }
+}
+```
+где
+
+> `USER_HASH` — Хеш пользователя, который был заархивирован  
+> `DATE` — Дата до которой будут происходить списания 
+
+`FAIL`
+
+```json
+{
+  "status": {
+    "code": <ERROR_CODE>,
+    "message": "<ERROR_MESSAGE>"
+  },
+  "error": true
+}
+```
+
+*Коды ошибок:*
+> `0` — Нет ошибки  
+> `1` — Ошибка валидации данных  
+> `2` — Неверный ключ партнера    
+> `4` — Длина хеша должна быть 32 символа
+
+<a name="Разархивация-пользователя"></a>
+### Разархивация пользователя — `unarchiveUser`
+#### Синтаксис запроса
+```
+GET https://<HOST>/<PARTNER_PATH>/unarchiveUser ?
+  k=<PREFIX><USER_HASH><ENCRYPTED_DATA>
+```
+
+Для разархивации пользователя создадим следующий GET-запрос:
+
+```php
+$data = [];
+
+// генерируем URL
+$k    = json_encode($data);
+$code = SimpleCrypt::encrypt($k, '<CRYPT_KEY>');
+$url  = 'https://sandbox.promopult.org/partners/acme/unarchiveUser?k=zaa' . '<USER_HASH>' . urlencode($code)';
+```  
+
+#### Формат ответа ####
+`SUCCESS`
+
+```json
+{
+  "status": {
+    "code": 0,
+    "message": "ok"
+  },
+  "error": false,
+  "data": {
+    "userHash": "<USER_HASH>",
+  }
+}
+```
+где
+
+> `USER_HASH` — Хеш пользователя, который был заархивирован
+
+`FAIL`
+
+```json
+{
+  "status": {
+    "code": <ERROR_CODE>,
+    "message": "<ERROR_MESSAGE>"
+  },
+  "error": true
+}
+```
+
+*Коды ошибок:*
+> `0` — Нет ошибки  
+> `1` — Ошибка валидации данных  
+> `2` — Неверный ключ партнера    
+> `4` — Длина хеша должна быть 32 символа
+
 
 <a name="Пополнение-баланса-пользователя"></a>
 ### Пополнение баланса пользователя — `doPayment`
