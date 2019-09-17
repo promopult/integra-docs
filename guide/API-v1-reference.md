@@ -121,7 +121,8 @@ GET https://<HOST>/<PARTNER_PATH>/cryptLogin ?
 $data = [
   'login' => '<LOGIN>',
   'hash'  => '<USER_HASH>',
-  'createdOn' => date('Y-m-d h:i:s')
+  'createdOn' => date('Y-m-d h:i:s'),
+  'paymentNotifyUrl' => '<PAYMENT_NOTIFY_URL>' // Необязятельный параметр
 ];
 
 // генерируем URL
@@ -129,12 +130,17 @@ $k    = json_encode($data);
 $code = SimpleCrypt::encrypt($k, '<CRYPT_KEY>');
 $url  = 'https://sandbox.promopult.org/partners/acme/cryptLogin?k=zaa' . '<USER_HASH>' . urlencode($code) . '&r=<PAGE>';
 ```
+где
+> `LOGIN` — логин пользователя,    
+> `USER_HASH` — хэш пользователя,      
+> `PAYMENT_NOTIFY_URL` — URL на который будут отправлятся уведомления при пополнении счета (необязательный параметр).  
 
 В результате переменная `$url` будет содержать ссылку, которую можно подставлять в параметр `src` тега iframe.
 
 *Пример:*  
 
 `https://sandbox.promopult.org/partners/acme/cryptLogin?k=zaaf3102ac1d0588bea1db5411f662826636ZTQo%2BDP4JOoltfdzJ7T0tTXoanh0Wba5s%2BkZKaYa2uqk6OS1dfV05RvV9uimaZn2dOm0qKZbgHaqaef2Metn2OX15elpWymnm6bk5yVluPNlqve1cbej7CEnaJmaaKfoaNlqpCmn6yWZ7OYppPr`
+
 
 <a name="Архивация-пользователя"></a>
 ### Архивация пользователя — `archiveUser`

@@ -6,7 +6,7 @@
  * Заглушка класса шифрования. Реальный исходный код класса уникальный
  * для каждого партнера и будет предоставлен на этапе интеграции.
  *
- * @author Dmitry Gladyshev <dgladyshev@seopult.ru>
+ * @author Dmitry Gladyshev <dgladyshev@promopult.ru>
  */
 class SimpleCrypt implements CryptInterface
 {
