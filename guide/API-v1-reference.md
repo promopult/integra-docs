@@ -6,7 +6,9 @@
 * [Архивация пользователя — `archiveUser`](#Архивация-пользователя)
 * [Разархивация пользователя — `unarchiveUser`](#Разархивация-пользователя)
 * [Пополнение баланса пользователя — `doPayment`](#Пополнение-баланса-пользователя)
-* [Получение данных пользователей партнёра — `getUserData`](#Получение-данных-пользователей-партнёра)
+* [Подтверждение платежа — `confirmPayment`](#Подтверждение-платежа)
+* [Получение данных пользователя — `getUserData`](#Получение-данных-пользователя)
+* [Получение данных всех пользователей партнёра — `getUsersData`](#Получение-данных-всех-пользователей-партнёра)
 * [Получение списка непрочитанных сообщений пользователя — `getUserMessages`](#Получение-списка-сообщений-пользователя)
 * [Получение списка непрочитанных сообщений всех пользователей партнёра — `getMessages`](#Получение-сообщений-всех-пользователей-партнёра)
 * [Получение шаблонов сообщений — `getMessageTemplates`](#Получение-шаблонов-сообщений)
@@ -309,15 +311,136 @@ $url = 'https://<HOST>/<PARTNER_PATH>/doPayment?k=zaa' .  '<USER_HASH>' . urlenc
 }
 ```
 
+<a name="Подтверждение-платежа"></a>
+### Подтверждение платежа — `confirmPayment`
 
-<a name="Получение-данных-пользователей-партнёра"></a>
-### Получение данных всех пользователей партнера — `getUserData`
+Обратите внимание, что платежи созданные методом `doPayment`, подтверждать не требуется.
+
+#### Синтаксис запроса ####
+```
+GET https://<HOST>/<PARTNER_PATH>/confirmPayment ?
+  k=<PREFIX><USER_HASH><ENCRYPTED_DATA>
+```
+
+Создадим GET-запрос для подтверждения платежа:
+
+```php
+$dataJson = array(
+  'paymentSum' => '<PAYMENT_COST>',
+  'paymentId'  => '<PAYMENT_HASH>',
+);
+
+$k = json_encode($dataJson);
+$code = SimpleCrypt::encrypt($k, '<CRYPT_KEY>');
+$url = 'https://<HOST>/<PARTNER_PATH>/confirmPayment?k=zaa' .  '<USER_HASH>' . urlencode($code);
+
+```
+где
+> `PAYMENT_COST` — Сумма платежа  
+> `PAYMENT_ID` — Идентификатор платежа переданный при создании платежа (см. [Пополнение через эквайринг Партнера](guide-finance.md#пополнение-через-эквайринг-партнера)).      
+
+#### Формат ответа ####
+`SUCCESS`
+```json
+{
+  "status": {
+    "code": 0,
+    "message": "ok"
+  },
+  "error": false,
+  "data": {
+    "paymentId": "<PAYMENT_ID>"
+  }
+}
+```
+где
+> `PAYMENT_ID` — Идентификатор платежа в системе.  
+
+`FAIL`
+```json
+{
+  "status" : {
+    "code" : <ERROR_CODE>,
+    "message" : "<ERROR_MESSAGE>"
+  },
+  "error" : true
+}
+```
+
+
+<a name="Получение-данных-пользователя"></a>
+### Получение данных пользователя — `getUserData`
+#### Синтаксис запроса
+```
+GET https://<HOST>/<PARTNER_PATH>/getUserData ?
+  k=<PREFIX><USER_HASH><ENCRYPTED_DATA>
+```
+где
+> `USER_HASH` — Хеш пользователя.
+
+Создадим адрес GET-запроса:
+
+```php
+$queryData = array(
+  'partner' => '<PARTNER_HASH>'
+);
+
+$k = json_encode($queryData);
+$code = SimpleCrypt::encrypt($k, '<PARTHER_CRYPT_KEY>');
+$url = 'https://sandbox.promopult.org/partners/acme/getUserData?k=zaa' . '<USER_HASH>' . urlencode($code)
+```
+ 
+#### Формат ответа
+`SUCCESS`
+```json
+{
+  "status": {
+    "code": 0,
+    "message": "ok"
+  },
+  "error": false,
+  "data": {
+    "hash": "<USER_HASH>",
+    "balance": <USER_BALANCE>,
+    "dailyBudget": <DAILY_BUDGET>,
+    "dailyExpense": <DAILY_EXPENCE>,
+    "url": "<URL>",
+    "keywords": <ARRAY_OF_KEYWORDS>,
+    "status": "<STATUS>"
+  }
+}
+
+```
+где,  
+> `USER_HASH` — Хэш пользователя.   
+> `USER_BALANCE` — Баланс счёта пользователя.   
+> `DAILY_BUDGET` — Дневной бюджет пользователя (считается как МЕСЯЧНЫЙ_БЮДЖЕТ / 30).
+> `DAILY_EXPENCE` — Средний дневной расход средств.    
+> `URL` — Текущий хост продвигаемого проекта.   
+> `ARRAY_OF_KEYWORDS` — Массив клучевых фраз, в формате `["слово1", "слово2"]`.     
+> `STATUS` — Статус пользователя, принимает значения `stopped` или `new`.  
+
+`FAIL`
+```json
+{
+  "status" : {
+    "code" : <ERROR_CODE>,
+    "message" : "<ERROR_MESSAGE>"
+  },
+  "error" : true
+}
+```  
+
+
+
+<a name="Получение-данных-всех-пользователей-партнёра"></a>
+### Получение данных всех пользователей партнера — `getUsersData`
 При необходимости можно получить данные всех пользователей партнера: баланс, статус проекта и ключевых слов.
 Для этого необходимо запросить ключ шифрования партнера `PARTNER_CRYPT_KEY`, т.к. метод не подразумевает использования ключа шифрования какого-либо пользователя системы.
 
 #### Синтаксис запроса
 ```
-GET https://<HOST>/<PARTNER_PATH>/getUserData ?
+GET https://<HOST>/<PARTNER_PATH>/getUsersData ?
   k=<PREFIX><PARTNER_HASH><ENCRYPTED_DATA>
 ```
 где
@@ -338,6 +461,7 @@ $url = 'https://sandbox.promopult.org/partners/acme/getUsersData?k=zaa' . '<PART
 
 где
 > `PARTHER_CRYPT_KEY` — Ключ который необходимо запросить. Уникален для партнера системы.
+
 
 <a name="Получение-списка-сообщений-пользователя"></a>
 ## Получение списка непрочитанных сообщений пользователя — `getUserMessages`
