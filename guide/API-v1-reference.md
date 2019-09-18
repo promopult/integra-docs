@@ -7,6 +7,7 @@
 * [Разархивация пользователя — `unarchiveUser`](#Разархивация-пользователя)
 * [Пополнение баланса пользователя — `doPayment`](#Пополнение-баланса-пользователя)
 * [Подтверждение платежа — `confirmPayment`](#Подтверждение-платежа)
+* [Отклонение платежа — `declinePayment`](#Отклонение-платежа)
 * [Получение данных пользователя — `getUserData`](#Получение-данных-пользователя)
 * [Получение данных всех пользователей партнёра — `getUsersData`](#Получение-данных-всех-пользователей-партнёра)
 * [Получение списка непрочитанных сообщений пользователя — `getUserMessages`](#Получение-списка-сообщений-пользователя)
@@ -332,8 +333,8 @@ GET https://<HOST>/<PARTNER_PATH>/confirmPayment ?
 
 ```php
 $dataJson = array(
-  'paymentSum' => '<PAYMENT_COST>',
-  'paymentId'  => '<PAYMENT_HASH>',
+  'amount' => '<AMOUNT>',
+  'transactionId'  => '<TRANSACTION_ID>',
 );
 
 $k = json_encode($dataJson);
@@ -342,8 +343,8 @@ $url = 'https://<HOST>/<PARTNER_PATH>/confirmPayment?k=zaa' .  '<USER_HASH>' . u
 
 ```
 где
-> `PAYMENT_COST` — Сумма платежа  
-> `PAYMENT_ID` — Идентификатор платежа переданный при создании платежа (см. [Пополнение через эквайринг Партнера](guide-finance.md#пополнение-через-эквайринг-партнера)).      
+> `AMOUNT` — Сумма платежа  
+> `TRANSACTION_ID` — Идентификатор платежа переданный при создании платежа (см. [Пополнение со счета Партнера](guide-finance.md#пополнение-со-счета-партнера)).      
 
 #### Формат ответа ####
 `SUCCESS`
@@ -355,12 +356,68 @@ $url = 'https://<HOST>/<PARTNER_PATH>/confirmPayment?k=zaa' .  '<USER_HASH>' . u
   },
   "error": false,
   "data": {
-    "paymentId": "<PAYMENT_ID>"
+    "transactionId": "<TRANSACTION_ID>"
   }
 }
 ```
 где
-> `PAYMENT_ID` — Идентификатор платежа в системе.  
+> `TRANSACTION_ID` — Идентификатор платежа в системе.  
+
+`FAIL`
+```json
+{
+  "status" : {
+    "code" : <ERROR_CODE>,
+    "message" : "<ERROR_MESSAGE>"
+  },
+  "error" : true
+}
+```
+
+
+<a name="Отклонение-платежа"></a>
+### Отклонение платежа — `declinePayment`
+
+#### Синтаксис запроса ####
+```
+GET https://<HOST>/<PARTNER_PATH>/declinePayment ?
+  k=<PREFIX><USER_HASH><ENCRYPTED_DATA>
+```
+
+Создадим GET-запрос для отклонения платежа:
+
+```php
+$dataJson = array(
+  'transactionId'  => '<TRANSACTION_ID>',
+  'errorCode'      => <ERROR_CODE>,        // Необязятельный параметр (больше не поддерживается)
+  'errorMessage'   => '<ERROR_MESSAGE>',   // Необязятельный параметр (больше не поддерживается)
+  'errorLink'      => '<ERROR_LINK>',      // Необязятельный параметр (больше не поддерживается)
+);
+
+$k = json_encode($dataJson);
+$code = SimpleCrypt::encrypt($k, '<CRYPT_KEY>');
+$url = 'https://<HOST>/<PARTNER_PATH>/declinePayment?k=zaa' . '<USER_HASH>' . urlencode($code);
+
+```
+где  
+> `TRANSACTION_ID` — идентификатор платежа переданный при создании платежа (см. [Пополнение со счета Партнера](guide-finance.md#пополнение-со-счета-партнера)).      
+
+#### Формат ответа ####
+`SUCCESS`
+```json
+{
+  "status": {
+    "code": 0,
+    "message": "ok"
+  },
+  "error": false,
+  "data": {
+    "transactionId": "<TRANSACTION_ID>"
+  }
+}
+```
+где
+> `TRANSACTION_ID` — Идентификатор платежа в системе.  
 
 `FAIL`
 ```json
