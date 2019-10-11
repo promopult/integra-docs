@@ -845,7 +845,7 @@ $url = 'http://sandbox.promopult.org/partners/acme/changeUrl?k=zaa' . '<USER_HAS
         onload="iFrameResize({ checkOrigin: false }, this)"></iframe>
 ```
 
-Также, можно ознакомиться с [репозиторием] (https://github.com/davidjbradshaw/iframe-resizer) либы на github на предмет других возможностей.
+Также, можно ознакомиться с [репозиторием](https://github.com/davidjbradshaw/iframe-resizer) либы на github на предмет других возможностей.
 
 
 <a name="Deeplinks"></a>
