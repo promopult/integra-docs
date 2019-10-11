@@ -832,14 +832,15 @@ $url = 'http://sandbox.promopult.org/partners/acme/changeUrl?k=zaa' . '<USER_HAS
 Для установки автоматической высоты встройки внутри страницы партнёра по высоте её внутреннего содержимого, необходимо на странице подключения iframe добавить загрузку скрипта ресайзера.
 ```html
 <script type="text/javascript"
-        src="https://sandbox.iframe.promopult.org/integration/resizer.js"></script>
+        src="https://web.promopult.org/partners/default/iframeResizer.min.js"></script>
 ```
 
 Далее на событие `onload` `html`-элемента iframe добавить вызов: `iFrameResize({ checkOrigin: false }, this)`
 
 ```html
-<iframe src="https://sandbox.promopult.org
+<iframe src="https://sandbox.promopult.org/partners/acme/cryptLogin?k=..."
         scrolling="no"
+        seamless="seamless"
         style="min-height: 600px"
         onload="iFrameResize({ checkOrigin: false }, this)"></iframe>
 ```
