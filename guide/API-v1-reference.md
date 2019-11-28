@@ -469,7 +469,8 @@ $url = 'https://sandbox.promopult.org/partners/acme/getUserData?k=zaa' . '<USER_
     "dailyExpense": <DAILY_EXPENCE>,
     "url": "<URL>",
     "keywords": <ARRAY_OF_KEYWORDS>,
-    "status": "<STATUS>"
+    "status": "<STATUS>",
+    "progress": "<PROGRESS>"
   }
 }
 
@@ -482,7 +483,8 @@ $url = 'https://sandbox.promopult.org/partners/acme/getUserData?k=zaa' . '<USER_
 > `URL` — Текущий хост продвигаемого проекта.   
 > `ARRAY_OF_KEYWORDS` — Массив клучевых фраз, в формате `["слово1", "слово2"]`.     
 > `STATUS` — Статус пользователя, принимает значения `run`, `stopped` или `new`.  
-
+> `PRGOGRESS` - Прогресс пользователя, принимает значения `WIZARD_STEP_1`, `WIZARD_STEP_2`, `WIZARD_STEP_3`, 
+> `WIZARD_STEP_4`, `CAMPAIGN_PAID`, `CAMPAIGN_UNPAID`, `UNKNOWN`.  
 `FAIL`
 ```json
 {
