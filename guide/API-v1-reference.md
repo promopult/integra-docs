@@ -8,6 +8,7 @@
 * [Пополнение баланса пользователя — `doPayment`](#Пополнение-баланса-пользователя)
 * [Подтверждение платежа — `confirmPayment`](#Подтверждение-платежа)
 * [Отклонение платежа — `declinePayment`](#Отклонение-платежа)
+* [Финансовая сводка пользователя за день — `getFinSummaryByDate`](#Финансовая-сводка-пользователя-за-день)
 * [Получение данных пользователя — `getUserData`](#Получение-данных-пользователя)
 * [Получение данных всех пользователей партнёра — `getUsersData`](#Получение-данных-всех-пользователей-партнёра)
 * [Получение списка непрочитанных сообщений пользователя — `getUserMessages`](#Получение-списка-сообщений-пользователя)
@@ -429,6 +430,63 @@ $url = 'https://<HOST>/<PARTNER_PATH>/declinePayment?k=zaa' . '<USER_HASH>' . ur
   "error" : true
 }
 ```
+
+
+<a name="Финансовая-сводка-пользователя-за-день"></a>
+### Финансовая сводка пользователя за день — `getFinSummaryByDate`
+#### Синтаксис запроса
+```
+GET https://<HOST>/<PARTNER_PATH>/getFinSummaryByDate?k=<PREFIX><USER_HASH><ENCRYPTED_DATA>
+```
+где
+> `USER_HASH` — Хеш пользователя.
+
+Создадим адрес GET-запроса:
+
+```php
+$queryData = array(
+  'date' => '<DATE>'
+);
+
+$k = json_encode($queryData);
+$code = SimpleCrypt::encrypt($k, '<USER_CRYPT_KEY>');
+$url = 'https://sandbox.promopult.org/partners/acme/getFinSummaryByDate?k=zaa' . '<USER_HASH>' . urlencode($code);  
+```
+ 
+#### Формат ответа
+`SUCCESS`
+```json
+{
+  "status": {
+    "code": 0,
+    "message": "ok"
+  },
+  "error": false,
+  "data": {
+    "date": "<DATE>",
+    "balance": <USER_BALANCE>,
+    "income": <USER_INCOME>,
+    "outcome": <USER_OUTCOME>,
+  }
+}
+
+```
+где,  
+> `DATE` — Дата в формате YYYY-MM-DD.   
+> `USER_BALANCE` — Баланс счёта пользователя.   
+> `USER_INCOME` — Сумма пополнений пользователя за день.  
+> `USER_OUTCOME` — Сумма списаний пользователя за день (со знаком минус).    
+  
+`FAIL`
+```json
+{
+  "status" : {
+    "code" : <ERROR_CODE>,
+    "message" : "<ERROR_MESSAGE>"
+  },
+  "error" : true
+}
+```  
 
 
 <a name="Получение-данных-пользователя"></a>
