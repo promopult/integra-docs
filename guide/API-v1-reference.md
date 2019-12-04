@@ -16,6 +16,7 @@
 * [Получение шаблонов сообщений — `getMessageTemplates`](#Получение-шаблонов-сообщений)
 * [Отметка о прочтении списка сообщений — `readMessages`](#Отметка-о-прочтении-списка-сообщений)
 * [Изменение URL-а проекта — `changeUrl`](#Изменение-urla-проекта)
+* [Подключение счётчика Yandex.Metrika — `attachYandexMetrikaCounter`](#Подключение-счётчика-yandex-metrika)
 * [Авторесайз фрейма](#Авторесайз-фрейма)
 * [Deeplinks](#Deeplinks)
 
@@ -841,7 +842,7 @@ ids=<IDS_COMMA_SEPARATED>
 GET https://<HOST>/<PARTNER_PATH>/changeUrl ?
   k=<PREFIX><USER_HASH><ENCRYPTED_DATA>
 ```
-Создадим урл GET-запроса для получения сообщений
+Создадим урл GET-запроса
 
 ```php
 $data = array(
@@ -874,6 +875,58 @@ $url = 'http://sandbox.promopult.org/partners/acme/changeUrl?k=zaa' . '<USER_HAS
 где
 > `NEW_URL` — Новый URL  
 > `OLD_URL` — URL проекта до вызова метода    
+
+`FAIL`
+```json
+{
+  "status" : {
+    "code" : <ERROR_CODE>,
+    "message" : "<ERROR_MESSAGE>"
+  },
+  "error" : true
+}
+```
+
+<a name="Подключение-счётчика-yandex-metrika"></a>
+##  Подключение счётчика Yandex.Metrika — `attachYandexMetrikaCounter`
+#### Синтаксис запроса
+```
+GET https://<HOST>/<PARTNER_PATH>/attachYandexMetrikaCounter ?
+  k=<PREFIX><USER_HASH><ENCRYPTED_DATA>
+```
+Создадим урл GET-запроса
+
+```php
+$data = array(
+    'counterId' => '<COUNTER_ID>',
+    'accessToken' => '<ACCESS_TOKEN>'
+);
+
+$k = json_encode($data);
+$code = SimpleCrypt::encrypt($k, '<CRYPT_KEY>');
+$url = 'http://sandbox.promopult.org/partners/acme/attachYandexMetrikaCounter?k=zaa' . '<USER_HASH>' . urlencode($code);
+```
+где
+> `COUNTER_ID` — Номер счетчика.  
+> `ACCESS_TOKEN` — OAuth-токен для доступа в Яндекс.  
+ 
+#### Формат ответа
+`SUCCESS`
+```json
+{
+  "status": {
+    "code": 0,
+    "message": "ok"
+  },
+  "error": false,
+  "data": {
+    "id": <INTERNAL_COUNTER_ID>
+  }
+}
+
+```
+где
+> `INTERNAL_COUNTER_ID` — Внутрений идентификатор счетчика в Integra.  
 
 `FAIL`
 ```json
