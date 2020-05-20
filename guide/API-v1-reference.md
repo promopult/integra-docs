@@ -942,13 +942,18 @@ $url = 'http://sandbox.promopult.org/partners/acme/attachYandexMetrikaCounter?k=
 <a name="Авторесайз-фрейма"></a>
 ## Авторесайз фрейма
 
-Для установки автоматической высоты встройки внутри страницы партнёра по высоте её внутреннего содержимого, необходимо на странице подключения iframe добавить загрузку скрипта ресайзера.
+Для установки автоматической высоты встройки внутри страницы партнёра по высоте её внутреннего содержимого, необходимо на странице подключения `iframe` добавить загрузку скрипта ресайзера с предлагаемого хоста.
 ```html
 <script type="text/javascript"
         src="https://web.promopult.org/partners/default/iframeResizer.min.js"></script>
 ```
+Либо подключить самостоятельно из [github-репозитория](https://github.com/davidjbradshaw/iframe-resizer) файл [iframeResizer.min.js](https://github.com/davidjbradshaw/iframe-resizer/blob/master/js/iframeResizer.min.js).
+```html
+<script type="text/javascript"
+        src="/iframeResizer.min.js"></script>
+```
 
-Далее на событие `onload` `html`-элемента iframe добавить вызов: `iFrameResize({ checkOrigin: false }, this)`
+Далее, на событие `onload` `html`-элемента `iframe` добавить вызов: `iFrameResize({ checkOrigin: false }, this)`
 
 ```html
 <iframe src="https://sandbox.promopult.org/partners/acme/cryptLogin?k=..."
@@ -958,7 +963,7 @@ $url = 'http://sandbox.promopult.org/partners/acme/attachYandexMetrikaCounter?k=
         onload="iFrameResize({ checkOrigin: false }, this)"></iframe>
 ```
 
-Также, можно ознакомиться с [репозиторием](https://github.com/davidjbradshaw/iframe-resizer) либы на github на предмет других возможностей.
+Также, можно ознакомиться с [репозиторием](https://github.com/davidjbradshaw/iframe-resizer) либы на github.com на предмет других возможностей.
 
 
 <a name="Deeplinks"></a>
