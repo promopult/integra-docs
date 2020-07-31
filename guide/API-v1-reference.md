@@ -157,6 +157,7 @@ GET https://<HOST>/<PARTNER_PATH>/archiveUser ?
 
 ```php
 $data = [
+   'partner' => '<PARTNER_HASH>'
 ];
 
 // генерируем URL
@@ -183,7 +184,8 @@ $url  = 'https://sandbox.promopult.org/partners/acme/archiveUser?k=zaa' . '<USER
 ```
 где
 
-> `USER_HASH` — Хеш пользователя, который был заархивирован  
+> `USER_HASH` — Хеш пользователя, который был заархивирован 
+> `PARTNER_HASH` — Хеш партнера
 > `DATE` — Дата до которой будут происходить списания 
 
 `FAIL`
@@ -215,7 +217,9 @@ GET https://<HOST>/<PARTNER_PATH>/unarchiveUser ?
 Для разархивации пользователя создадим следующий GET-запрос:
 
 ```php
-$data = [];
+$data = [
+   'partner' => '<PARTNER_HASH>'
+];
 
 // генерируем URL
 $k    = json_encode($data);
@@ -241,6 +245,7 @@ $url  = 'https://sandbox.promopult.org/partners/acme/unarchiveUser?k=zaa' . '<US
 где
 
 > `USER_HASH` — Хеш пользователя, который был заархивирован
+> `PARTNER_HASH` — Хеш партнера
 
 `FAIL`
 
