@@ -278,9 +278,10 @@ GET https://<HOST>/<PARTNER_PATH>/doPayment ?
 
 ```php
 $paymentData = array(
-  'paymentSum'   => '<PAYMENT_COST>',
-  'paymentHash'  => '<PAYMENT_HASH>',
-  'userLogin'    => '<LOGIN>',
+  'paymentSum'      => '<PAYMENT_COST>',
+  'paymentSumBonus' => '<PAYMENT_BONUS>',
+  'paymentHash'     => '<PAYMENT_HASH>',
+  'userLogin'       => '<LOGIN>',
 );
 
 $k = json_encode($paymentData);
@@ -290,6 +291,7 @@ $url = 'https://<HOST>/<PARTNER_PATH>/doPayment?k=zaa' .  '<USER_HASH>' . urlenc
 ```
 где
 > `PAYMENT_COST` — Сумма платежа  
+> `PAYMENT_BONUS` — Сумма бонусного платежа  
 > `PAYMENT_HASH` — Хеш платежа. Уникальное случайное 32-символьное значение. Формат: md5-код.  
 > `LOGIN` — Логин пользователя в системе.  
 
