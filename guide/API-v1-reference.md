@@ -305,16 +305,12 @@ $url = 'https://<HOST>/<PARTNER_PATH>/doPayment?k=zaa' .  '<USER_HASH>' . urlenc
   },
   "error": false,
   "data": {
-    "paymentId": "<PAYMENT_ID>",
-    "paymentBonuses": <PAYMENT_BONUSES>,
-    "paymentMonthsDiscount": <PAYMENT_MONTHS_DISCOUNT>
+    "paymentId": "<PAYMENT_ID>"
   }
 }
 ```
 где
 > `PAYMENT_ID` — Ид платежа в системе. +Обязательно нужно его привязать (сохранить) к платежу в партнерской системе. Пример: `114163`.  
-> `PAYMENT_BONUSES` — Актуально только при включенной системе скидок, иначе поле отсутствует! Сумма бонусов, полученная дополнительно к сумме оплаты.  
-> `PAYMENT_MONTHS_DISCOUNT` — Актуально только при включенной системе скидок, иначе поле отсутствует!   
 
 `FAIL`
 ```json
