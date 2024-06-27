@@ -124,7 +124,6 @@ GET https://<HOST>/<PARTNER_PATH>/cryptLogin ?
 $data = [
   'login' => '<LOGIN>',
   'hash'  => '<USER_HASH>',
-  'createdOn' => date('Y-m-d h:i:s'),
   'paymentNotifyUrl' => '<PAYMENT_NOTIFY_URL>' // Необязятельный параметр
 ];
 
