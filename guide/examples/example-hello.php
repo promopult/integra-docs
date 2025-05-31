@@ -12,12 +12,9 @@ $dataJson = json_encode([
 $hash = getenv('__PARTNER_HASH__');
 $cryptKey = getenv('__PARTNER_KEY__');
 
-// Для разработки удобно использовать песочницу https://sandbox.promopult.org
-$apiHost = getenv('__API_HOST__');
+$data = (new SimpleCrypt)->encrypt($dataJson, $cryptKey);
 
-$data = SimpleCrypt::encrypt($dataJson, $cryptKey);
-
-$url = $apiHost.'/iframe/hello?k=zaa' . $hash . urlencode($data);
+$url = 'https://sandbox.promopult.org/iframe/hello?k=zaa' . $hash . urlencode($data);
 
 
 /* Вызываем API */

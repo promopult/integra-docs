@@ -510,7 +510,7 @@ $queryData = array(
 );
 
 $k = json_encode($queryData);
-$code = SimpleCrypt::encrypt($k, '<PARTHER_CRYPT_KEY>');
+$code = SimpleCrypt::encrypt($k, '<PARTNER_CRYPT_KEY>');
 $url = 'https://sandbox.promopult.org/partners/acme/getUserData?k=zaa' . '<USER_HASH>' . urlencode($code)
 ```
  
@@ -524,28 +524,57 @@ $url = 'https://sandbox.promopult.org/partners/acme/getUserData?k=zaa' . '<USER_
   },
   "error": false,
   "data": {
-    "hash": "<USER_HASH>",
-    "balance": <USER_BALANCE>,
-    "dailyBudget": <DAILY_BUDGET>,
-    "dailyExpense": <DAILY_EXPENCE>,
-    "url": "<URL>",
-    "keywords": <ARRAY_OF_KEYWORDS>,
-    "status": "<STATUS>",
-    "progress": "<PROGRESS>"
+    "hash": string,
+    "balance": float,
+    "dailyBudget": float,
+    "dailyExpense": float,
+    "url": string,
+    "keywords": string[],
+    "status": string,
+    "progress": string,
+    "markers": MARKER[],
+    "unreadCount": int,
+    "balanceInfo": BALANCE_INFO
   }
 }
-
 ```
 где,  
-> `USER_HASH` — Хэш пользователя.   
-> `USER_BALANCE` — Баланс счёта пользователя.   
-> `DAILY_BUDGET` — Дневной бюджет пользователя (считается как МЕСЯЧНЫЙ_БЮДЖЕТ / 30).  
-> `DAILY_EXPENCE` — Средний дневной расход средств.    
-> `URL` — Текущий хост продвигаемого проекта.   
-> `ARRAY_OF_KEYWORDS` — Массив клучевых фраз, в формате `["слово1", "слово2"]`.     
-> `STATUS` — Статус пользователя, принимает значения `run`, `stopped` или `new`.  
-> `PRGOGRESS` - Прогресс пользователя, принимает значения `WIZARD_STEP_1`, `WIZARD_STEP_2`, `WIZARD_STEP_3`, 
+> `hash` — Хэш пользователя.   
+> `balance` — Баланс счёта пользователя.   
+> `dailyBudget` — Дневной бюджет пользователя (считается как МЕСЯЧНЫЙ_БЮДЖЕТ / 30).  
+> `dailyExpense` — Средний дневной расход средств.    
+> `url` — Текущий хост продвигаемого проекта.   
+> `keywords` — Массив клучевых фраз, в формате `["слово1", "слово2"]`.     
+> `status` — Статус пользователя, принимает значения `run`, `stopped` или `new`.  
+> `progress` — Прогресс пользователя, принимает значения `WIZARD_STEP_1`, `WIZARD_STEP_2`, `WIZARD_STEP_3`, 
 > `WIZARD_STEP_4`, `CAMPAIGN_PAID`, `CAMPAIGN_UNPAID`, `UNKNOWN`.  
+> `markers` — Список алертов уровня пользователя  
+> `unreadCount` — Счетчик непрочитанных сообщений пользователя  
+> `balanceInfo` — Данные об остатке баланса   
+>
+> >`BALANCE_INFO`
+> >```json
+> > {
+> >    "days": int,       // Количество дней в последнем месяце до окончания баланса
+> >    "months": int,     // Количество месяцев до окончания баланса
+> >    "untilTime": int,  // Дата окончания баланса (timestamp, мс), например, 1811192400000 это 5/25/2027, 12:00:00 AM
+> > }
+> > ```
+>
+> >`MARKER`
+> > ```json
+> > {
+> >    code: int               // Внутренний код маркера
+> >    type: string            // Тип маркера: error, warning, notice, info, success 
+> >    title: string           // Заголовок
+> >    text: string            // Текст
+> >    title_template: string  // Шаблон заголовка в формате Mustache
+> >    text_template: string   // Шаблон тела в формате Mustache
+> >    data: array             // Массив с данными для подстановки в шаблоны
+> > }
+> >```
+```
+
 `FAIL`
 ```json
 {
